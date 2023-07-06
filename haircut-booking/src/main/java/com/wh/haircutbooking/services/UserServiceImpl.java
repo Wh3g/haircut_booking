@@ -1,5 +1,7 @@
 package com.wh.haircutbooking.services;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +19,9 @@ public class UserServiceImpl implements UserSevice {
 		return repository.save(user);
 	}
 
-	// @Override
-	// public User getUser(String email, String password) {
-	// // TODO Auto-generated method stub
-	// throw new UnsupportedOperationException("Unimplemented method 'getUser'");
-	// }
+	@Override
+	public Optional<User> getUser(String email, String password) {
+		return repository.getByEmailAndPassword(email, password);
+	}
 
 }

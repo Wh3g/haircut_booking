@@ -31,8 +31,10 @@ public class UserServiceImplTest {
 		verify(repository, times(1)).save(user);
 	}
 
-	// @Test
-	// public void testGetUser() {
-	// service.getUser(user.getEmail(), user.getPassword());
-	// }
+	@Test
+	public void testGetUser() {
+		service.getUser(user.getEmail(), user.getPassword());
+
+		verify(repository, times(1)).getByEmailAndPassword(user.getEmail(), user.getPassword());
+	}
 }
