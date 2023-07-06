@@ -6,6 +6,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -55,4 +57,19 @@ public class UserRestControllerTest {
 		assertEquals(HttpStatus.CREATED, actualResult.getStatusCode());
 	}
 
+	@Test
+	public void testGetUser() {
+		controller.getUser(user.getEmail(), user.getPassword());
+
+		verify(service, times(1)).getUser(user.getEmail(), user.getPassword());
+	}
+
+	@Test
+	public void testGetUserResponse() {
+		when(service.getUser(user.getEmail(), user.getPassword())).thenReturn(Optional.of(user));
+
+		Optional<User> actualResult = controller.getUser(user.getEmail(), user.getPassword());
+
+		assertEquals(Optional.of(user), actualResult);
+	}
 }
