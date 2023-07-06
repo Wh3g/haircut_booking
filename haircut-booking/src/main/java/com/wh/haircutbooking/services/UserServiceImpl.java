@@ -1,10 +1,12 @@
 package com.wh.haircutbooking.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.wh.haircutbooking.entities.User;
 import com.wh.haircutbooking.repositories.UserRepository;
 
+@Service
 public class UserServiceImpl implements UserSevice {
 
 	@Autowired

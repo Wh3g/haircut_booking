@@ -2,12 +2,15 @@ package com.wh.haircutbooking.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
 public class User {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String firstName;
 	private String lastName;
@@ -20,8 +23,7 @@ public class User {
 	public User() {
 	}
 
-	public User(long id, String firstName, String lastName, String email, String phoneNumber, String password) {
-		this.id = id;
+	public User(String firstName, String lastName, String email, String phoneNumber, String password) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
