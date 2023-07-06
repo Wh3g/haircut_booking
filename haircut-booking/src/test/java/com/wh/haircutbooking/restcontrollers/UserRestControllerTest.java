@@ -1,4 +1,4 @@
-package com.wh.haircutbooking.services;
+package com.wh.haircutbooking.restcontrollers;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -11,28 +11,23 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.wh.haircutbooking.entities.User;
-import com.wh.haircutbooking.repositories.UserRepository;
+import com.wh.haircutbooking.services.UserSevice;
 
 @ExtendWith(MockitoExtension.class)
-public class UserServiceImplTest {
+public class UserRestControllerTest {
 
 	@InjectMocks
-	private UserServiceImpl service;
+	private UserRestController controller;
 
 	@Mock
-	private UserRepository repository;
+	private UserSevice service;
 
 	private User user = mock(User.class);
 
 	@Test
 	public void testCreateUser() {
-		service.createUser(user);
+		controller.createUser(user);
 
-		verify(repository, times(1)).save(user);
+		verify(service, times(1)).createUser(user);
 	}
-
-	// @Test
-	// public void testGetUser() {
-	// service.getUser(user.getEmail(), user.getPassword());
-	// }
 }

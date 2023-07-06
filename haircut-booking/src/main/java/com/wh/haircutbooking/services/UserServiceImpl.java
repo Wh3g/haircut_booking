@@ -15,4 +15,10 @@ public class UserServiceImpl implements UserSevice {
 		return repository.save(user);
 	}
 
+	// @Override
+	// public User getUser(String email, String password) {
+	// // TODO Auto-generated method stub
+	// throw new UnsupportedOperationException("Unimplemented method 'getUser'");
+	// }
+
 }
