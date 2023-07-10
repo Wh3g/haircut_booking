@@ -1,8 +1,12 @@
 package com.wh.haircutbooking.services;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,4 +34,21 @@ public class BookingServiceImplTest {
 
 		verify(repository, times(1)).save(booking);
 	}
+
+	@Test
+	public void testCreateBookingReturn() {
+		when(repository.save(booking)).thenReturn(booking);
+
+		Booking actualResult = service.createBooking(booking);
+
+		assertNotNull(actualResult);
+	}
+
+	@Test
+	public void testGetAllBookings() {
+		service.getAllBookings();
+
+		verify(repository, times(1)).findAll();
+	}
+
 }
