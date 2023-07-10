@@ -22,4 +22,8 @@ public class BookingRestController {
 		return new ResponseEntity<Booking>(storedBooking, HttpStatus.CREATED);
 	}
 
+	public void getAllBookings() {
+		service.getAllBookings();
+	}
+
 }

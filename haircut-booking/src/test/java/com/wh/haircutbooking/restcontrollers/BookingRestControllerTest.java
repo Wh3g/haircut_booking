@@ -51,4 +51,11 @@ public class BookingRestControllerTest {
 
 		assertEquals(HttpStatus.CREATED, actualResult.getStatusCode());
 	}
+
+	@Test
+	public void testGetAllBookings() {
+		controller.getAllBookings();
+
+		verify(service, times(1)).getAllBookings();
+	}
 }
