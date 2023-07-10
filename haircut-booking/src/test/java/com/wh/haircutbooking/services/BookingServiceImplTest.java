@@ -1,11 +1,13 @@
 package com.wh.haircutbooking.services;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -51,4 +53,15 @@ public class BookingServiceImplTest {
 		verify(repository, times(1)).findAll();
 	}
 
+	@Test
+	public void testGetAllBookingsReturn() {
+		List<Booking> list = new ArrayList<>();
+		list.add(mock(Booking.class));
+
+		when(repository.findAll()).thenReturn(list);
+
+		List<Booking> actualResult = service.getAllBookings();
+
+		assertEquals(list, actualResult);
+	}
 }

@@ -4,6 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -57,5 +61,17 @@ public class BookingRestControllerTest {
 		controller.getAllBookings();
 
 		verify(service, times(1)).getAllBookings();
+	}
+
+	@Test
+	public void testGetAllBookingsResponse() {
+		List<Booking> list = new ArrayList<>();
+		list.add(mock(Booking.class));
+
+		when(service.getAllBookings()).thenReturn(list);
+
+		List<Booking> actualResult = controller.getAllBookings();
+
+		assertEquals(list, actualResult);
 	}
 }

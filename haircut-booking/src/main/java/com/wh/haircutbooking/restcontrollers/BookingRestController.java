@@ -1,5 +1,7 @@
 package com.wh.haircutbooking.restcontrollers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +24,8 @@ public class BookingRestController {
 		return new ResponseEntity<Booking>(storedBooking, HttpStatus.CREATED);
 	}
 
-	public void getAllBookings() {
-		service.getAllBookings();
+	public List<Booking> getAllBookings() {
+		return service.getAllBookings();
 	}
 
 }
