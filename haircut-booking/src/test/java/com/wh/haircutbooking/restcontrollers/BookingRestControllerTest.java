@@ -1,14 +1,22 @@
 package com.wh.haircutbooking.restcontrollers;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import org.apache.catalina.connector.Response;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.wh.haircutbooking.entities.Booking;
 import com.wh.haircutbooking.services.BookingService;
@@ -24,10 +32,24 @@ public class BookingRestControllerTest {
 
 	private Booking booking = mock(Booking.class);
 
+	private MockHttpServletRequest request = new MockHttpServletRequest();
+
+	@BeforeEach
+	public void setup() {
+		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+	}
+
 	@Test
 	public void testCreateBooking() {
 		controller.createBooking(booking);
 
 		verify(service, times(1)).createBooking(booking);
+	}
+
+	@Test
+	public void testCreateBookingResponse() {
+		ResponseEntity<Booking> actualResult = controller.createBooking(booking);
+
+		assertEquals(HttpStatus.CREATED, actualResult.getStatusCode());
 	}
 }
