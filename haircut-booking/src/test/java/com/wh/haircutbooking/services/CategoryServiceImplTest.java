@@ -30,4 +30,11 @@ public class CategoryServiceImplTest {
 
 		verify(repository, times(1)).save(category);
 	}
+
+	@Test
+	public void testGetCategories() {
+		service.getAllCategories();
+
+		verify(repository, times(1)).findAll();
+	}
 }

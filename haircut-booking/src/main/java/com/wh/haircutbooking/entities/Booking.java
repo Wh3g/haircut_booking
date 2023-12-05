@@ -21,10 +21,14 @@ public class Booking {
 	@JoinColumn(name = "user_id")
 	private User user;
 
+	@ManyToOne
+	@JoinColumn(name = "category_id")
+	private Category category;
+
 	public Booking() {
 	}
 
-	public Booking(long id, LocalDateTime timeStart, User user) {
+	public Booking(long id, LocalDateTime timeStart, User user, Category category) {
 		this.id = id;
 		this.timeStart = timeStart;
 		this.user = user;
@@ -52,6 +56,14 @@ public class Booking {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 
 }

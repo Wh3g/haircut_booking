@@ -1,5 +1,7 @@
 package com.wh.haircutbooking.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,11 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public Category createCategory(Category category) {
 		return repository.save(category);
+	}
+
+	@Override
+	public List<Category> getAllCategories() {
+		return repository.findAll();
 	}
 
 }
