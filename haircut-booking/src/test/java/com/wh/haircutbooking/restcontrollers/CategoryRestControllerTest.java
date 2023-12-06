@@ -4,6 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +21,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.wh.haircutbooking.entities.Booking;
 import com.wh.haircutbooking.entities.Category;
 import com.wh.haircutbooking.services.CategoryService;
 
@@ -50,5 +55,24 @@ public class CategoryRestControllerTest {
 		ResponseEntity<Category> actualResult = controller.createCategory(category);
 
 		assertEquals(HttpStatus.CREATED, actualResult.getStatusCode());
+	}
+
+	@Test
+	public void testGetAllCategories() {
+		controller.getAllCategories();
+
+		verify(service, times(1)).getAllCategories();
+	}
+
+	@Test
+	public void testGetAllCategoriesResponse() {
+		List<Category> list = new ArrayList<>();
+		list.add(mock(Category.class));
+
+		when(service.getAllCategories()).thenReturn(list);
+
+		List<Category> actualResult = controller.getAllCategories();
+
+		assertEquals(list, actualResult);
 	}
 }
