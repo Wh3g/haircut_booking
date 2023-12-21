@@ -21,7 +21,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.wh.haircutbooking.entities.User;
-import com.wh.haircutbooking.services.UserSevice;
+import com.wh.haircutbooking.services.UserService;
 
 @ExtendWith(MockitoExtension.class)
 public class UserRestControllerTest {
@@ -30,7 +30,7 @@ public class UserRestControllerTest {
 	private UserRestController controller;
 
 	@Mock
-	private UserSevice service;
+	private UserService service;
 
 	private User user = mock(User.class);
 

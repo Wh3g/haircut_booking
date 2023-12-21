@@ -32,6 +32,15 @@ public class User {
 		this.password = password;
 	}
 
+	public User(String firstName, String lastName, String email, String phoneNumber, String password, boolean admin) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.phoneNumber = phoneNumber;
+		this.password = password;
+		this.admin = admin;
+	}
+
 	public long getId() {
 		return id;
 	}

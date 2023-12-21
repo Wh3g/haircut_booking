@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import com.wh.haircutbooking.entities.User;
 
-public interface UserSevice {
+public interface UserService {
 
 	public User createUser(User user);
 

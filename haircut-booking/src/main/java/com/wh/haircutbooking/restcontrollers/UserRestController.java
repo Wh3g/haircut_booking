@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wh.haircutbooking.entities.User;
-import com.wh.haircutbooking.services.UserSevice;
+import com.wh.haircutbooking.services.UserService;
 
 @RestController
 public class UserRestController {
 
 	@Autowired
-	private UserSevice service;
+	private UserService service;
 
 	@PostMapping("/users")
 	public ResponseEntity<User> createUser(@RequestBody User user) {

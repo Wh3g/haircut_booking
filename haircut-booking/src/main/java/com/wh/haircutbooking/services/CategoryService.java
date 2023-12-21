@@ -6,7 +6,7 @@ import com.wh.haircutbooking.entities.Category;
 
 public interface CategoryService {
 
-	public Category createCategory(Category category);
+	public Category createCategory(Category category, String username, String password);
 
 	public List<Category> getAllCategories();
 }

@@ -21,8 +21,8 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.wh.haircutbooking.entities.Booking;
 import com.wh.haircutbooking.entities.Category;
+import com.wh.haircutbooking.entities.User;
 import com.wh.haircutbooking.services.CategoryService;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,6 +35,7 @@ public class CategoryRestControllerTest {
 	private CategoryService service;
 
 	private Category category = mock(Category.class);
+	private User user = mock(User.class);
 
 	private MockHttpServletRequest request = new MockHttpServletRequest();
 
@@ -45,14 +46,15 @@ public class CategoryRestControllerTest {
 
 	@Test
 	public void testCreateCategory() {
-		controller.createCategory(category);
+		controller.createCategory(category, user.getEmail(), user.getPassword());
 
-		verify(service, times(1)).createCategory(category);
+		verify(service, times(1)).createCategory(category, user.getEmail(), user.getPassword());
 	}
 
 	@Test
 	public void testCreateCategoryResponse() {
-		ResponseEntity<Category> actualResult = controller.createCategory(category);
+		ResponseEntity<Category> actualResult = controller.createCategory(category, user.getEmail(),
+				user.getPassword());
 
 		assertEquals(HttpStatus.CREATED, actualResult.getStatusCode());
 	}

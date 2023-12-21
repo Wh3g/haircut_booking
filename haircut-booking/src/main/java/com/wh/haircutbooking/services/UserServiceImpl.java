@@ -9,7 +9,7 @@ import com.wh.haircutbooking.entities.User;
 import com.wh.haircutbooking.repositories.UserRepository;
 
 @Service
-public class UserServiceImpl implements UserSevice {
+public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserRepository repository;
