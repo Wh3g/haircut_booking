@@ -2,7 +2,6 @@ package com.wh.haircutbooking.services;
 
 import java.util.List;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,12 +37,18 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	private List<Booking> privacyFilter(List<Booking> bookings, User user) {
-		Predicate<Booking> otherUser = booking -> booking.getUser() != user;
-		Function<Booking, Booking> anonymousBooking = booking -> new Booking(booking.getId(), booking.getTimeStart(),
-				booking.getCategory());
-		return bookings.stream()
-				.filter(otherUser)
+		User nullUser = null;
+		Function<Booking, Booking> anonymousBooking = booking -> {
+			if (!booking.getUser().equals(user)) {
+				booking.setUser(nullUser);
+			}
+			return booking;
+		};
+		List<Booking> filteredBookings = bookings
+				.stream()
 				.map(anonymousBooking)
 				.collect(Collectors.toList());
+
+		return filteredBookings;
 	}
 }

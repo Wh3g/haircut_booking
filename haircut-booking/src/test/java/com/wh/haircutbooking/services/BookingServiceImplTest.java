@@ -81,7 +81,7 @@ public class BookingServiceImplTest {
 		when(userService.getUser(user.getEmail(), user.getPassword())).thenReturn(Optional.of(user));
 
 		User user2 = mock(User.class);
-		when(booking.getUser()).thenReturn(user2);
+		when(booking.getUser()).thenReturn(user2, null);
 
 		List<Booking> list = new ArrayList<>();
 		list.add(booking);
