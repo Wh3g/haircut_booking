@@ -8,5 +8,5 @@ public interface BookingService {
 
 	public Booking createBooking(Booking booking);
 
-	public List<Booking> getAllBookings();
+	public List<Booking> getAllBookings(String email, String password);
 }

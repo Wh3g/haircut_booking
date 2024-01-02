@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.wh.haircutbooking.entities.Booking;
+import com.wh.haircutbooking.entities.User;
 import com.wh.haircutbooking.repositories.BookingRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,7 +30,11 @@ public class BookingServiceImplTest {
 	@Mock
 	private BookingRepository repository;
 
+	@Mock
+	private UserService userService;
+
 	private Booking booking = mock(Booking.class);
+	private User user = mock(User.class);
 
 	@Test
 	public void testCreateBooking() {
@@ -48,20 +54,44 @@ public class BookingServiceImplTest {
 
 	@Test
 	public void testGetAllBookings() {
-		service.getAllBookings();
+		when(user.isAdmin()).thenReturn(true);
+		when(userService.getUser(user.getEmail(), user.getPassword())).thenReturn(Optional.of(user));
+		service.getAllBookings(user.getEmail(), user.getPassword());
 
 		verify(repository, times(1)).findAll();
 	}
 
 	@Test
 	public void testGetAllBookingsReturn() {
+		when(user.isAdmin()).thenReturn(true);
+		when(userService.getUser(user.getEmail(), user.getPassword())).thenReturn(Optional.of(user));
 		List<Booking> list = new ArrayList<>();
 		list.add(mock(Booking.class));
 
 		when(repository.findAll()).thenReturn(list);
 
-		List<Booking> actualResult = service.getAllBookings();
+		List<Booking> actualResult = service.getAllBookings(user.getEmail(), user.getPassword());
 
 		assertEquals(list, actualResult);
+	}
+
+	@Test
+	public void testNonAdminGetBookings() {
+		when(user.isAdmin()).thenReturn(false);
+		when(userService.getUser(user.getEmail(), user.getPassword())).thenReturn(Optional.of(user));
+
+		User user2 = mock(User.class);
+		when(booking.getUser()).thenReturn(user2);
+
+		List<Booking> list = new ArrayList<>();
+		list.add(booking);
+
+		when(repository.findAll()).thenReturn(list);
+
+		User actualResult = service.getAllBookings(user.getEmail(), user.getPassword())
+									.get(0)
+									.getUser();
+		
+		assertEquals(null, actualResult);
 	}
 }

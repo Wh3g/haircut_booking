@@ -32,6 +32,13 @@ public class Booking {
 		this.id = id;
 		this.timeStart = timeStart;
 		this.user = user;
+		this.category = category;
+	}
+
+	public Booking(long id, LocalDateTime timeStart, Category category) {
+		this.id = id;
+		this.timeStart = timeStart;
+		this.category = category;
 	}
 
 	public long getId() {

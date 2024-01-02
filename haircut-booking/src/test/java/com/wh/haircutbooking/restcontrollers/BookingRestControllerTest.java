@@ -22,6 +22,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.wh.haircutbooking.entities.Booking;
+import com.wh.haircutbooking.entities.User;
 import com.wh.haircutbooking.services.BookingService;
 
 @ExtendWith(MockitoExtension.class)
@@ -34,6 +35,7 @@ public class BookingRestControllerTest {
 	private BookingService service;
 
 	private Booking booking = mock(Booking.class);
+	private User user = mock(User.class);
 
 	private MockHttpServletRequest request = new MockHttpServletRequest();
 
@@ -58,9 +60,9 @@ public class BookingRestControllerTest {
 
 	@Test
 	public void testGetAllBookings() {
-		controller.getAllBookings();
+		controller.getAllBookings(user.getEmail(), user.getPassword());
 
-		verify(service, times(1)).getAllBookings();
+		verify(service, times(1)).getAllBookings(user.getEmail(), user.getPassword());
 	}
 
 	@Test
@@ -68,9 +70,9 @@ public class BookingRestControllerTest {
 		List<Booking> list = new ArrayList<>();
 		list.add(mock(Booking.class));
 
-		when(service.getAllBookings()).thenReturn(list);
+		when(service.getAllBookings(user.getEmail(), user.getPassword())).thenReturn(list);
 
-		List<Booking> actualResult = controller.getAllBookings();
+		List<Booking> actualResult = controller.getAllBookings(user.getEmail(), user.getPassword());
 
 		assertEquals(list, actualResult);
 	}
