@@ -1,5 +1,6 @@
 package com.wh.haircutbooking.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -21,7 +22,19 @@ public class BookingServiceImpl implements BookingService {
 	private UserService userService;
 
 	@Override
-	public Booking createBooking(Booking booking) {
+	public Booking createBooking(Booking booking) throws IllegalStateException {
+
+		List<Booking> savedBookings = repository.findAll();
+		LocalDateTime bookingEndTime = booking.getTimeStart().plusMinutes(booking.getCategory().getTime());
+
+		for (Booking savedBooking : savedBookings) {
+			if (checkOverlap(booking.getTimeStart(), bookingEndTime, savedBooking)) {
+				continue;
+			} else {
+				throw new IllegalStateException("Booking overlaps with an existing booking");
+			}
+		}
+
 		return repository.save(booking);
 	}
 
@@ -50,5 +63,14 @@ public class BookingServiceImpl implements BookingService {
 				.collect(Collectors.toList());
 
 		return filteredBookings;
+	}
+
+	private boolean checkOverlap(LocalDateTime startTime, LocalDateTime endTime, Booking booking) {
+		LocalDateTime bookingEndTime = booking.getTimeStart().plusMinutes(booking.getCategory().getTime());
+		if (startTime.isAfter(bookingEndTime) || endTime.isBefore(booking.getTimeStart())) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

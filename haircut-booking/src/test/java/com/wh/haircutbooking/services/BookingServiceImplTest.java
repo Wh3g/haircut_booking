@@ -2,11 +2,13 @@ package com.wh.haircutbooking.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +20,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.wh.haircutbooking.entities.Booking;
+import com.wh.haircutbooking.entities.Category;
 import com.wh.haircutbooking.entities.User;
 import com.wh.haircutbooking.repositories.BookingRepository;
 
@@ -50,6 +53,25 @@ public class BookingServiceImplTest {
 		Booking actualResult = service.createBooking(booking);
 
 		assertNotNull(actualResult);
+	}
+
+	@Test
+	public void testCreateBookingOverlap() {
+		Category category = mock(Category.class);
+		when(category.getTime()).thenReturn(15);
+		when(booking.getTimeStart()).thenReturn(LocalDateTime.of(2024, 1, 15, 15, 0, 0));
+		when(booking.getCategory()).thenReturn(category);
+		List<Booking> bookingList = new ArrayList<>();
+		bookingList.add(booking);
+
+		when(repository.findAll()).thenReturn(bookingList);
+
+		Booking booking2 = mock(Booking.class);
+		when(booking2.getTimeStart()).thenReturn(LocalDateTime.of(2024, 1, 15, 15, 10, 0));
+		when(booking2.getCategory()).thenReturn(category);
+
+		assertThrows(IllegalStateException.class,
+				() -> service.createBooking(booking2));
 	}
 
 	@Test
@@ -89,9 +111,9 @@ public class BookingServiceImplTest {
 		when(repository.findAll()).thenReturn(list);
 
 		User actualResult = service.getAllBookings(user.getEmail(), user.getPassword())
-									.get(0)
-									.getUser();
-		
+				.get(0)
+				.getUser();
+
 		assertEquals(null, actualResult);
 	}
 }
