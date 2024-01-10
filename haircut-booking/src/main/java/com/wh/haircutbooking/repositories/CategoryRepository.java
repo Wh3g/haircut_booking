@@ -7,5 +7,6 @@ import com.wh.haircutbooking.entities.Category;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
-
+	// no code needed as most CRUD functionality can be done with methods from
+	// JpaRepository
 }

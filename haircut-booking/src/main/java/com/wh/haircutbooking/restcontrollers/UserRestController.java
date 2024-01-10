@@ -26,7 +26,7 @@ public class UserRestController {
 		return new ResponseEntity<User>(storedUser, HttpStatus.CREATED);
 	}
 
-	@GetMapping("/users/{email}/{password}")
+	@GetMapping("/users/{email}/{password}") // login details as path variables
 	public Optional<User> getUser(@PathVariable("email") String email, @PathVariable("password") String password) {
 		return service.getUser(email, password);
 	}

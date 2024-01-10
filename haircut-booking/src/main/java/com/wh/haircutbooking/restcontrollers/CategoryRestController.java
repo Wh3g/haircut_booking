@@ -20,7 +20,7 @@ public class CategoryRestController {
 	@Autowired
 	private CategoryService service;
 
-	@PostMapping("/categories/{email}/{password}")
+	@PostMapping("/categories/{email}/{password}") // takes login details as path variables to authenticate
 	public ResponseEntity<Category> createCategory(@RequestBody Category category,
 			@PathVariable("email") String email,
 			@PathVariable("password") String password) {

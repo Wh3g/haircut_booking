@@ -23,23 +23,52 @@ public class BookingServiceImpl implements BookingService {
 
 	@Override
 	public Booking createBooking(Booking booking) throws IllegalStateException {
-
+		// checkList method returns false if the booking overlaps with another booking
 		if (checkList(booking)) {
 			return repository.save(booking);
-		} else {
+		} else { // throws exception
 			throw new IllegalStateException("Booking overlaps with an existing booking");
 		}
 
 	}
 
-	private boolean checkList(Booking booking) {
-		List<Booking> savedBookings = repository.findAll();
+	@Override
+	public List<Booking> getAllBookings(String email, String password) {
+		User user = userService.getUser(email, password).get();
 
-		for (Booking savedBooking : savedBookings) {
+		// if user is admin, they can see all the booking information
+		if (user.isAdmin()) {
+			return repository.findAll();
+		} else { // if not, all user info is hidden, unless they are the sane user
+			return privacyFilter(repository.findAll(), user);
+		}
+	}
+
+	private List<Booking> privacyFilter(List<Booking> bookings, User user) {
+		User nullUser = null;
+		// Lambda expression saved to variable
+		Function<Booking, Booking> anonymousBooking = booking -> {
+			if (!booking.getUser().equals(user)) { // any bookings with a different user
+				booking.setUser(nullUser); // the user field is set to null
+			}
+			return booking;
+		};
+		List<Booking> filteredBookings = bookings
+				.stream() // iterates through bookings list
+				.map(anonymousBooking) // runs anonymousBooking, changing certain elements
+				.collect(Collectors.toList()); // saved as a new List
+
+		return filteredBookings;
+	}
+
+	private boolean checkList(Booking booking) {
+		List<Booking> savedBookings = repository.findAll(); // gets all saved bookings
+
+		for (Booking savedBooking : savedBookings) { // iterates through savedBookings
 			if (checkOverlap(booking.getTimeStart(), getBookingEndTime(booking), savedBooking)) {
-				continue;
+				continue; // in booking doesn't overlap, continue
 			} else {
-				return false;
+				return false; // booking overlaps, cannot be saved
 			}
 		}
 		return true;
@@ -49,38 +78,12 @@ public class BookingServiceImpl implements BookingService {
 		return booking.getTimeStart().plusMinutes(booking.getCategory().getTime());
 	}
 
-	@Override
-	public List<Booking> getAllBookings(String email, String password) {
-		User user = userService.getUser(email, password).get();
-
-		if (user.isAdmin()) {
-			return repository.findAll();
-		} else {
-			return privacyFilter(repository.findAll(), user);
-		}
-	}
-
-	private List<Booking> privacyFilter(List<Booking> bookings, User user) {
-		User nullUser = null;
-		Function<Booking, Booking> anonymousBooking = booking -> {
-			if (!booking.getUser().equals(user)) {
-				booking.setUser(nullUser);
-			}
-			return booking;
-		};
-		List<Booking> filteredBookings = bookings
-				.stream()
-				.map(anonymousBooking)
-				.collect(Collectors.toList());
-
-		return filteredBookings;
-	}
-
+	// checks booking to be saved against one saved booking
 	private boolean checkOverlap(LocalDateTime startTime, LocalDateTime endTime, Booking booking) {
 		if (startTime.isAfter(getBookingEndTime(booking)) || endTime.isBefore(booking.getTimeStart())) {
-			return true;
+			return true; // booking doesn't overlap
 		} else {
-			return false;
+			return false; // booking does overlap
 		}
 	}
 }

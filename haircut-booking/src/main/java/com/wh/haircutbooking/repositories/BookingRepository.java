@@ -7,5 +7,6 @@ import com.wh.haircutbooking.entities.Booking;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
-
+	// no code needed as most CRUD functionality can be done with methods from
+	// JpaRepository
 }

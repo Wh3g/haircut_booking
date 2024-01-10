@@ -20,9 +20,9 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public Category createCategory(Category category, String username, String password) throws RuntimeException {
-		User user = userService.getUser(username, password).get();
+		User user = userService.getUser(username, password).get(); // checks login details
 
-		if (user.isAdmin()) {
+		if (user.isAdmin()) { // only admins can create categories
 			return repository.save(category);
 		} else {
 			throw new RuntimeException("This User does not have Admin privileges");
