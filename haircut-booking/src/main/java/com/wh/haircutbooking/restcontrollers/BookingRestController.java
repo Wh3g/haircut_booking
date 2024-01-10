@@ -22,8 +22,13 @@ public class BookingRestController {
 
 	@PostMapping("/bookings")
 	public ResponseEntity<Booking> createBooking(@RequestBody Booking booking) {
-		Booking storedBooking = service.createBooking(booking);
-		return new ResponseEntity<Booking>(storedBooking, HttpStatus.CREATED);
+		try {
+			Booking storedBooking = service.createBooking(booking);
+			return new ResponseEntity<Booking>(storedBooking, HttpStatus.CREATED);
+		} catch (IllegalStateException e) {
+			System.out.println(e.getMessage());
+			return new ResponseEntity<Booking>(booking, HttpStatus.CONFLICT);
+		}
 	}
 
 	@GetMapping("/bookings/{email}/{password}")
