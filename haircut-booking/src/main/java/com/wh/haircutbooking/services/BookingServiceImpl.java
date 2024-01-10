@@ -24,18 +24,29 @@ public class BookingServiceImpl implements BookingService {
 	@Override
 	public Booking createBooking(Booking booking) throws IllegalStateException {
 
-		List<Booking> savedBookings = repository.findAll();
-		LocalDateTime bookingEndTime = booking.getTimeStart().plusMinutes(booking.getCategory().getTime());
-
-		for (Booking savedBooking : savedBookings) {
-			if (checkOverlap(booking.getTimeStart(), bookingEndTime, savedBooking)) {
-				continue;
-			} else {
-				throw new IllegalStateException("Booking overlaps with an existing booking");
-			}
+		if (checkList(booking)) {
+			return repository.save(booking);
+		} else {
+			throw new IllegalStateException("Booking overlaps with an existing booking");
 		}
 
-		return repository.save(booking);
+	}
+
+	private boolean checkList(Booking booking) {
+		List<Booking> savedBookings = repository.findAll();
+
+		for (Booking savedBooking : savedBookings) {
+			if (checkOverlap(booking.getTimeStart(), getBookingEndTime(booking), savedBooking)) {
+				continue;
+			} else {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private LocalDateTime getBookingEndTime(Booking booking) {
+		return booking.getTimeStart().plusMinutes(booking.getCategory().getTime());
 	}
 
 	@Override
@@ -66,8 +77,7 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	private boolean checkOverlap(LocalDateTime startTime, LocalDateTime endTime, Booking booking) {
-		LocalDateTime bookingEndTime = booking.getTimeStart().plusMinutes(booking.getCategory().getTime());
-		if (startTime.isAfter(bookingEndTime) || endTime.isBefore(booking.getTimeStart())) {
+		if (startTime.isAfter(getBookingEndTime(booking)) || endTime.isBefore(booking.getTimeStart())) {
 			return true;
 		} else {
 			return false;
