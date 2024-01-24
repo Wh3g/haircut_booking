@@ -39,7 +39,7 @@ public class BookingServiceImpl implements BookingService {
 		// if user is admin, they can see all the booking information
 		if (user.isAdmin()) {
 			return repository.findAll();
-		} else { // if not, all user info is hidden, unless they are the sane user
+		} else { // if not, all user info is hidden, unless they are the same user
 			return privacyFilter(repository.findAll(), user);
 		}
 	}
